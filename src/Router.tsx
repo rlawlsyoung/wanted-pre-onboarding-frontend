@@ -4,10 +4,13 @@ import Main from './pages/Main';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 
+import GlobalStyles from './styles/GlobalStyles';
+
 const Router = () => {
   return (
     <>
       <BrowserRouter>
+        <GlobalStyles />
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/signin" element={<SignIn />} />
