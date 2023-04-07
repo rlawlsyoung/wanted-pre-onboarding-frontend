@@ -23,7 +23,7 @@ const StyledHeader = styled.header`
   color: white;
 `;
 
-const Logo = styled.p`
+const Logo = styled.h1`
   font-size: 26px;
   font-weight: 700;
 `;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Main = () => {
-  return <StyledMain className="flex-center">환영합니다.</StyledMain>;
+  return <StyledMain className="flex-center">Welcome to Todo List App :)</StyledMain>;
 };
 
 const StyledMain = styled.div`
