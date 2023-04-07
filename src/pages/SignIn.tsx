@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import InputBox from '../components/InputBox';
+import AccountBtn from '../components/AccountBtn';
 
 const SignIn = () => {
   return (
@@ -9,6 +12,10 @@ const SignIn = () => {
         <FormTitle> Sign In</FormTitle>
         <InputBox title="e-mail" inputType="email-input" handleOnChange={() => {}}></InputBox>
         <InputBox title="password" inputType="password-input" handleOnChange={() => {}}></InputBox>
+        <ToSignUp>
+          Don't you have an account? <Link to="/signup"> Sign Up</Link>
+        </ToSignUp>
+        <AccountBtn text="Sign In" />
       </Form>
     </StyledSignIn>
   );
@@ -28,5 +35,7 @@ const FormTitle = styled.h2`
   font-size: 30px;
   font-weight: 900;
 `;
+
+const ToSignUp = styled.p``;
 
 export default SignIn;
