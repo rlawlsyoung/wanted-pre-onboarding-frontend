@@ -2,16 +2,28 @@ import styled from 'styled-components';
 
 interface InputProps {
   title: string;
+  dataTestId: string;
   inputType: string;
   placeholder: string;
   handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputBox: React.FC<InputProps> = ({ title, inputType, placeholder, handleOnChange }) => {
+const InputBox: React.FC<InputProps> = ({
+  title,
+  dataTestId,
+  inputType,
+  placeholder,
+  handleOnChange,
+}) => {
   return (
     <StyledInput>
       <InputTitle>{title}</InputTitle>
-      <Input data-testid={inputType} onChange={handleOnChange} placeholder={placeholder} />
+      <Input
+        type={inputType}
+        data-testid={dataTestId}
+        onChange={handleOnChange}
+        placeholder={placeholder}
+      />
     </StyledInput>
   );
 };

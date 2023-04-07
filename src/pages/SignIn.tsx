@@ -1,11 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import InputBox from '../components/InputBox';
 import AccountBtn from '../components/AccountBtn';
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
   const [emailValue, setEmailValue] = useState('');
   const [pwValue, setPwValue] = useState('');
   const [isValid, setIsValid] = useState(false);
@@ -18,27 +21,41 @@ const SignIn = () => {
     setPwValue(e.target.value);
   }, []);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    axios
+      .post('https://www.pre-onboarding-selection-task.shop/auth/signin', {
+        email: emailValue,
+        password: pwValue,
+      })
+      .then(() => {
+        navigate('/todo');
+      })
+      .catch((err) => {
+        alert(`account doesn't exist or wrong password`);
+      });
+  };
 
   useEffect(() => {
-    if (emailValue.includes('@') && pwValue.length > 8) setIsValid(true);
+    if (emailValue.includes('@') && pwValue.length >= 8) setIsValid(true);
     else setIsValid(false);
-    console.log(isValid);
   }, [emailValue, pwValue]);
 
   return (
     <StyledSignIn className="flex-center">
-      <Form className="flex-center">
+      <Form className="flex-center" onSubmit={handleSubmit}>
         <FormTitle> Sign In</FormTitle>
         <InputBox
           title="e-mail"
-          inputType="email-input"
+          dataTestId="email-input"
           placeholder="must include @"
+          inputType="text"
           handleOnChange={handleEmailChange}></InputBox>
         <InputBox
           title="password"
-          inputType="password-input"
+          dataTestId="password-input"
           placeholder="at least 8 characters"
+          inputType="password"
           handleOnChange={handlePwChange}></InputBox>
         <ToSignUp>
           Don't you have an account? <Link to="/signup"> Sign Up</Link>
