@@ -8,10 +8,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ isLogIn, setIsLogIn }) => {
-  const handleLogOut = () => {
+  const handleLogOut = useCallback(() => {
     localStorage.removeItem('token');
     setIsLogIn(false);
-  };
+  }, [setIsLogIn]);
 
   return (
     <StyledHeader>

@@ -62,7 +62,7 @@ const SignUp = () => {
           placeholder="at least 8 characters"
           inputType="password"
           handleOnChange={handlePwChange}></InputBox>
-        <AccountBtn text="Sign up" isValid={isValid} />
+        <AccountBtn text="Sign up" dataTestId="signup-button" isValid={isValid} />
       </Form>
     </StyledSignUp>
   );

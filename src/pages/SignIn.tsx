@@ -25,22 +25,25 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
     setPwValue(e.target.value);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    axios
-      .post('https://www.pre-onboarding-selection-task.shop/auth/signin', {
-        email: emailValue,
-        password: pwValue,
-      })
-      .then((res) => {
-        localStorage.setItem('token', res.data.access_token);
-        setIsLogIn(true);
-        navigate('/todo');
-      })
-      .catch((err) => {
-        alert(`account doesn't exist or wrong password`);
-      });
-  };
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      axios
+        .post('https://www.pre-onboarding-selection-task.shop/auth/signin', {
+          email: emailValue,
+          password: pwValue,
+        })
+        .then((res) => {
+          localStorage.setItem('token', res.data.access_token);
+          setIsLogIn(true);
+          navigate('/todo');
+        })
+        .catch((err) => {
+          alert(`account doesn't exist or wrong password`);
+        });
+    },
+    [emailValue, pwValue, setIsLogIn, navigate],
+  );
 
   useEffect(() => {
     if (localStorage.getItem('token')) navigate('/todo');
@@ -70,7 +73,7 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
         <ToSignUp>
           Don't you have an account? <Link to="/signup"> Sign Up</Link>
         </ToSignUp>
-        <AccountBtn text="Sign In" isValid={isValid} />
+        <AccountBtn text="Sign In" dataTestId="signin-button" isValid={isValid} />
       </Form>
     </StyledSignIn>
   );

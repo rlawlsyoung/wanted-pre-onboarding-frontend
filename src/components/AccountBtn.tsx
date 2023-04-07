@@ -2,12 +2,13 @@ import styled from 'styled-components';
 
 interface AccountBtnProps {
   text: string;
+  dataTestId: string;
   isValid: boolean;
 }
 
-const AccountBtn: React.FC<AccountBtnProps> = ({ text, isValid }) => {
+const AccountBtn: React.FC<AccountBtnProps> = ({ text, dataTestId, isValid }) => {
   return (
-    <StyledAccountBtn className="flex-center" disabled={!isValid}>
+    <StyledAccountBtn className="flex-center" data-testid={dataTestId} disabled={!isValid}>
       {text}
     </StyledAccountBtn>
   );
