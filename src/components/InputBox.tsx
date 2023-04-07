@@ -2,19 +2,15 @@ import styled from 'styled-components';
 
 interface InputProps {
   title: string;
-  isEmail: boolean;
+  inputType: string;
   handleOnChange: () => void;
 }
 
-const InputBox: React.FC<InputProps> = ({ title, isEmail, handleOnChange }) => {
+const InputBox: React.FC<InputProps> = ({ title, inputType, handleOnChange }) => {
   return (
     <StyledInput>
       <InputTitle>{title}</InputTitle>
-      {isEmail ? (
-        <Input data-testid="email-input" onChange={handleOnChange} />
-      ) : (
-        <Input data-testid="password-input" onChange={handleOnChange} />
-      )}
+      <Input data-testid={inputType} onChange={handleOnChange} />
     </StyledInput>
   );
 };
@@ -23,11 +19,12 @@ const StyledInput = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-bottom: 40px;
 `;
 
 const InputTitle = styled.p`
   font-weight: 700;
-  margin: 5px;
+  margin-bottom: 5px;
 `;
 
 const Input = styled.input`

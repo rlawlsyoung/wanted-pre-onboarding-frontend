@@ -6,8 +6,12 @@ const Header = () => {
     <StyledHeader>
       <Logo>Todo List</Logo>
       <Nav>
-        <Link to="/signin">Sign In</Link>
-        <Link to="/todo">To do</Link>
+        <Link to="/signin" className="expansion">
+          Sign In
+        </Link>
+        <Link to="/todo" className="expansion">
+          To do
+        </Link>
       </Nav>
     </StyledHeader>
   );

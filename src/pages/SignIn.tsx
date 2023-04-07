@@ -7,7 +7,8 @@ const SignIn = () => {
     <StyledSignIn className="flex-center">
       <Form className="flex-center">
         <FormTitle> Sign In</FormTitle>
-        <InputBox title="ID" isEmail={true} handleOnChange={() => {}}></InputBox>
+        <InputBox title="e-mail" inputType="email-input" handleOnChange={() => {}}></InputBox>
+        <InputBox title="password" inputType="password-input" handleOnChange={() => {}}></InputBox>
       </Form>
     </StyledSignIn>
   );
@@ -23,7 +24,7 @@ const Form = styled.form`
 `;
 
 const FormTitle = styled.h2`
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   font-size: 30px;
   font-weight: 900;
 `;

@@ -16,17 +16,27 @@ const GlobalStyle = createGlobalStyle`
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-tap-highlight-color: transparent;
   }
+
   a {
     text-decoration: none;
   }
+
   body {
     margin:0 auto;
     font-family: "Pretendard";
     }
+
   .flex-center{
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .expansion{
+    &:hover {
+          transform: scale(1.1);
+          transition: 0.3s;
+        }
   }
 `;
 
