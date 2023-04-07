@@ -38,6 +38,10 @@ const SignUp = () => {
   };
 
   useEffect(() => {
+    if (localStorage.getItem('token')) navigate('/todo');
+  }, [navigate]);
+
+  useEffect(() => {
     if (emailValue.includes('@') && pwValue.length >= 8) setIsValid(true);
     else setIsValid(false);
   }, [emailValue, pwValue]);

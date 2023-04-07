@@ -33,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .expansion{
+    cursor: pointer;
     &:hover {
           transform: scale(1.1);
           transition: 0.3s;

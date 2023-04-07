@@ -1,17 +1,34 @@
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Header = () => {
+interface HeaderProps {
+  isLogIn: boolean;
+  setIsLogIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header: React.FC<HeaderProps> = ({ isLogIn, setIsLogIn }) => {
+  const handleLogOut = () => {
+    localStorage.removeItem('token');
+    setIsLogIn(false);
+  };
+
   return (
     <StyledHeader>
       <Logo>Todo List</Logo>
       <Nav>
-        <Link to="/signin" className="expansion">
-          Sign In
-        </Link>
         <Link to="/todo" className="expansion">
           To do
         </Link>
+        {isLogIn ? (
+          <p className="expansion" onClick={handleLogOut}>
+            Log Out
+          </p>
+        ) : (
+          <Link to="/signin" className="expansion">
+            Sign In
+          </Link>
+        )}
       </Nav>
     </StyledHeader>
   );
@@ -37,6 +54,10 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-evenly;
   width: 40vw;
+
+  p {
+    font-size: 18px;
+  }
 
   a {
     color: white;

@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import InputBox from '../components/InputBox';
 import AccountBtn from '../components/AccountBtn';
 
-const SignIn = () => {
+interface SignInProps {
+  setIsLogIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
   const navigate = useNavigate();
 
   const [emailValue, setEmailValue] = useState('');
@@ -28,13 +32,19 @@ const SignIn = () => {
         email: emailValue,
         password: pwValue,
       })
-      .then(() => {
+      .then((res) => {
+        localStorage.setItem('token', res.data.access_token);
+        setIsLogIn(true);
         navigate('/todo');
       })
       .catch((err) => {
         alert(`account doesn't exist or wrong password`);
       });
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) navigate('/todo');
+  }, [navigate]);
 
   useEffect(() => {
     if (emailValue.includes('@') && pwValue.length >= 8) setIsValid(true);
