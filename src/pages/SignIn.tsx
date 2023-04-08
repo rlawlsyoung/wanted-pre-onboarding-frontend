@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import InputBox from '../components/InputBox';
 import AccountBtn from '../components/AccountBtn';
 
+import { URL } from '../Router';
+
 interface SignInProps {
   setIsLogIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -29,7 +31,7 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       axios
-        .post('https://www.pre-onboarding-selection-task.shop/auth/signin', {
+        .post(`${URL}/auth/signin`, {
           email: emailValue,
           password: pwValue,
         })
@@ -63,7 +65,8 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
           dataTestId="email-input"
           placeholder="must include @"
           inputType="text"
-          handleOnChange={handleEmailChange}></InputBox>
+          handleOnChange={handleEmailChange}
+        />
         <InputBox
           title="password"
           dataTestId="password-input"

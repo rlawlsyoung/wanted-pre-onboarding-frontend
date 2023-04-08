@@ -9,6 +9,8 @@ import Todo from './pages/Todo';
 
 import GlobalStyles from './styles/GlobalStyles';
 
+export const URL = 'https://www.pre-onboarding-selection-task.shop';
+
 const Router = () => {
   const [isLogIn, setIsLogIn] = useState(false);
 

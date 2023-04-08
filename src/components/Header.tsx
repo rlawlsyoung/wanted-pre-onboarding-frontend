@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ isLogIn, setIsLogIn }) => {
       <Logo>Todo List</Logo>
       <Nav>
         <Link to="/todo" className="expansion">
-          To do
+          To Do
         </Link>
         {isLogIn ? (
           <p className="expansion" onClick={handleLogOut}>

@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import InputBox from '../components/InputBox';
 import AccountBtn from '../components/AccountBtn';
 
+import { URL } from '../Router';
+
 const SignUp = () => {
   const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ const SignUp = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post('https://www.pre-onboarding-selection-task.shop/auth/signup', {
+      .post(`${URL}/auth/signup`, {
         email: emailValue,
         password: pwValue,
       })
@@ -55,7 +57,8 @@ const SignUp = () => {
           dataTestId="email-input"
           placeholder="must include @"
           inputType="text"
-          handleOnChange={handleEmailChange}></InputBox>
+          handleOnChange={handleEmailChange}
+        />
         <InputBox
           title="password"
           dataTestId="password-input"
