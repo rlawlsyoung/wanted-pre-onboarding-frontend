@@ -57,7 +57,7 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
   }, [emailValue, pwValue]);
 
   return (
-    <StyledSignIn className="flex-center">
+    <StyledSignIn>
       <Form className="flex-center" onSubmit={handleSubmit}>
         <FormTitle> Sign In</FormTitle>
         <InputBox
@@ -83,7 +83,11 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
 };
 
 const StyledSignIn = styled.div`
-  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 120px);
+  margin-top: 40px;
 `;
 
 const Form = styled.form`

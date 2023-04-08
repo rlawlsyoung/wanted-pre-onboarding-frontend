@@ -49,7 +49,7 @@ const SignUp = () => {
   }, [emailValue, pwValue]);
 
   return (
-    <StyledSignUp className="flex-center">
+    <StyledSignUp>
       <Form className="flex-center" onSubmit={handleSubmit}>
         <FormTitle> Sign up</FormTitle>
         <InputBox
@@ -72,7 +72,11 @@ const SignUp = () => {
 };
 
 const StyledSignUp = styled.div`
-  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 120px);
+  margin-top: 40px;
 `;
 
 const Form = styled.form`

@@ -45,8 +45,8 @@ const Btn = styled.button`
   height: 30px;
   border: none;
   background-color: black;
-  border-right: 1px solid white;
-  border-left: 1px solid white;
+  border-right: 1.25px solid white;
+  border-left: 1.25px solid white;
   color: white;
   font-family: 'Pretendard';
   font-size: 12px;

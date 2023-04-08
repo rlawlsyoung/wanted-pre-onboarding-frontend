@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -16,21 +16,41 @@ interface TodoTypes {
 
 const Todo = () => {
   const [todoList, setTodoList] = useState<TodoTypes[]>([]);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     axios
       .get(`${URL}/todos`, {
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((res) => {
-        console.log(res);
+        res.data && setTodoList(res.data);
       });
   }, []);
 
+  const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }, []);
+
+  const handleAddTodo = () => {
+    axios({
+      url: `${URL}/todos`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      data: {
+        todo: inputValue,
+      },
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
-    <StyledTodo className="flex-center">
+    <StyledTodo>
       <TodoContainer className="flex-center">
         <TodoTitle>To Do</TodoTitle>
         <InputContainer className="flex-center">
@@ -39,13 +59,16 @@ const Todo = () => {
             dataTestId="new-todo-input"
             placeholder="at lease 1 character"
             inputType="text"
-            handleOnChange={() => {}}
+            handleOnChange={handleOnChange}
           />
-          <Btn data-testid="new-todo-add-button">Add</Btn>
+          <Btn data-testid="new-todo-add-button" onClick={handleAddTodo}>
+            Add
+          </Btn>
         </InputContainer>
         <TodoUl>
-          <TodoBox text="todo1" />
-          <TodoBox text="todo1" />
+          {todoList.map((todo) => (
+            <TodoBox text={todo.todo} key={todo.id} />
+          ))}
         </TodoUl>
       </TodoContainer>
     </StyledTodo>
@@ -53,7 +76,11 @@ const Todo = () => {
 };
 
 const StyledTodo = styled.div`
-  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 120px);
+  margin-top: 40px;
 `;
 
 const TodoContainer = styled.div`
