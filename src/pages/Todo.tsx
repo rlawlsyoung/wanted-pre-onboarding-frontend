@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import InputBox from '../components/InputBox';
+import TodoBox from '../components/TodoBox';
 
 import { URL } from '../Router';
 
@@ -27,6 +28,7 @@ const Todo = () => {
         console.log(res);
       });
   }, []);
+
   return (
     <StyledTodo className="flex-center">
       <TodoContainer className="flex-center">
@@ -34,13 +36,17 @@ const Todo = () => {
         <InputContainer className="flex-center">
           <InputBox
             title="what to do?"
-            dataTestId="email-input"
+            dataTestId="new-todo-input"
             placeholder="at lease 1 character"
             inputType="text"
             handleOnChange={() => {}}
           />
-          <Btn>Add</Btn>
+          <Btn data-testid="new-todo-add-button">Add</Btn>
         </InputContainer>
+        <TodoUl>
+          <TodoBox text="todo1" />
+          <TodoBox text="todo1" />
+        </TodoUl>
       </TodoContainer>
     </StyledTodo>
   );
@@ -77,6 +83,12 @@ const Btn = styled.button`
   font-size: 18px;
   cursor: pointer;
   /* cursor: ${(props) => (props.disabled ? '' : 'pointer')}; */
+`;
+
+const TodoUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
 export default Todo;
