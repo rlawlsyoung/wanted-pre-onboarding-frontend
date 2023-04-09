@@ -36,15 +36,15 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
 
   useEffect(() => {
     isLogIn &&
-      axios
-        .get(`${URL}/todos`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        })
-        .then((res) => {
-          res.data && setTodoList(res.data);
-        });
+      axios({
+        url: `${URL}/todos`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }).then((res) => {
+        res.data && setTodoList(res.data);
+      });
   }, [isLogIn]);
 
   const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +58,7 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
       },
       data: {
         todo: inputValue,
@@ -88,18 +89,51 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
         <TodoUl>
           {todoList.map((todo) => {
             const handleRemove = () => {
-              axios
-                .delete(`${URL}/todos/${todo.id}`, {
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                  },
-                })
-                .then(() => {
-                  const removedList = todoList.filter((newTodo) => newTodo.id !== todo.id);
-                  setTodoList(removedList);
-                });
+              axios({
+                url: `${URL}/todos/${todo.id}`,
+                method: 'delete',
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+              }).then(() => {
+                const newList = todoList.filter((newTodo) => newTodo.id !== todo.id);
+                setTodoList(newList);
+              });
             };
-            return <TodoBox text={todo.todo} key={todo.id} handleRemove={handleRemove} />;
+
+            const handleCheck = () => {
+              axios({
+                url: `${URL}/todos/${todo.id}`,
+                method: 'put',
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+                  'Content-Type': 'application/json',
+                },
+                data: {
+                  todo: todo.todo,
+                  isCompleted: !todo.isCompleted,
+                },
+              }).then(() => {
+                const copiedList = [...todoList];
+                copiedList[todoList.indexOf(todo)] = {
+                  id: todo.id,
+                  userId: todo.userId,
+                  todo: todo.todo,
+                  isCompleted: !todo.isCompleted,
+                };
+                setTodoList(copiedList);
+              });
+            };
+            return (
+              <TodoBox
+                id={todo.id}
+                text={todo.todo}
+                isCompleted={todo.isCompleted}
+                key={todo.id}
+                handleCheck={handleCheck}
+                handleRemove={handleRemove}
+              />
+            );
           })}
         </TodoUl>
       </TodoContainer>

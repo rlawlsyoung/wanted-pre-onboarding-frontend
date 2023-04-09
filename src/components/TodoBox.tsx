@@ -1,15 +1,21 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 interface TodoBoxProps {
+  id: number;
   text: string;
+  isCompleted: boolean;
+  handleCheck: () => void;
   handleRemove: () => void;
 }
 
-const TodoBox: React.FC<TodoBoxProps> = ({ text, handleRemove }) => {
+const TodoBox: React.FC<TodoBoxProps> = ({ text, isCompleted, handleCheck, handleRemove }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
   return (
     <StyledTodoBox>
       <Wrapper>
-        <Dot /> <Text>{text}</Text>
+        <CheckBox type="checkbox" checked={isCompleted} onChange={handleCheck} />{' '}
+        <Text>{text}</Text>
       </Wrapper>
       <Wrapper>
         <Btn data-testid="modify-button">Edit</Btn>
@@ -33,16 +39,12 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Dot = styled.div`
-  height: 5px;
-  width: 5px;
-  border-radius: 2.5px;
-  background-color: black;
+const CheckBox = styled.input`
   margin: 10px 10px 10px 0;
 `;
 
 const Text = styled.p`
-  width: calc(360px - 125px);
+  width: calc(360px - 133px);
   font-size: 15.5px;
   word-break: break-all;
   overflow: hidden;
@@ -53,8 +55,7 @@ const Btn = styled.button`
   height: 40px;
   border: none;
   background-color: black;
-  border-right: 1.25px solid white;
-  border-left: 1.25px solid white;
+  border-left: 2.5px solid white;
   color: white;
   font-family: 'Pretendard';
   font-size: 11px;

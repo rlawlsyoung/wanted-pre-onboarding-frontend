@@ -30,11 +30,12 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      axios
-        .post(`${URL}/auth/signin`, {
-          email: emailValue,
-          password: pwValue,
-        })
+      axios({
+        url: `${URL}/auth/signin`,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: { email: emailValue, password: pwValue },
+      })
         .then((res) => {
           localStorage.setItem('token', res.data.access_token);
           setIsLogIn(true);

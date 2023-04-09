@@ -25,11 +25,12 @@ const SignUp = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post(`${URL}/auth/signup`, {
-        email: emailValue,
-        password: pwValue,
-      })
+    axios({
+      url: `${URL}/auth/signup`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: { email: emailValue, password: pwValue },
+    })
       .then(() => {
         alert('Account creation complete');
         navigate('/signin');
