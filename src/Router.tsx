@@ -27,7 +27,7 @@ const Router = () => {
           <Route path="/" element={<Main />} />
           <Route path="/signin" element={<SignIn setIsLogIn={setIsLogIn} />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/todo" element={<Todo />} />
+          <Route path="/todo" element={<Todo isLogIn={isLogIn} />} />
         </Routes>
       </BrowserRouter>
     </>

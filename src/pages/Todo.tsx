@@ -6,6 +6,7 @@ import InputBox from '../components/InputBox';
 import TodoBox from '../components/TodoBox';
 
 import { URL } from '../Router';
+import { useNavigate } from 'react-router-dom';
 
 interface TodoTypes {
   id: number;
@@ -14,20 +15,30 @@ interface TodoTypes {
   userId: number;
 }
 
-const Todo = () => {
+interface TodoProps {
+  isLogIn: boolean;
+}
+
+const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
+  const navigate = useNavigate();
   const [todoList, setTodoList] = useState<TodoTypes[]>([]);
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    axios
-      .get(`${URL}/todos`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((res) => {
-        res.data && setTodoList(res.data);
-      });
+    if (!isLogIn) navigate('/signin');
+  }, [isLogIn, navigate]);
+
+  useEffect(() => {
+    isLogIn &&
+      axios
+        .get(`${URL}/todos`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        })
+        .then((res) => {
+          res.data && setTodoList(res.data);
+        });
   }, []);
 
   const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +46,7 @@ const Todo = () => {
   }, []);
 
   const handleAddTodo = () => {
+    setInputValue('');
     axios({
       url: `${URL}/todos`,
       method: 'POST',
@@ -46,7 +58,6 @@ const Todo = () => {
       },
     }).then((res) => {
       setTodoList([...todoList, res.data]);
-      setInputValue('');
     });
   };
 
@@ -58,8 +69,10 @@ const Todo = () => {
           <InputBox
             title="what to do?"
             dataTestId="new-todo-input"
-            placeholder="at lease 1 character"
+            placeholder="Enter 1 to 28 characters"
             inputType="text"
+            value={inputValue}
+            maxLength={28}
             handleOnChange={handleOnChange}
           />
           <Btn data-testid="new-todo-add-button" onClick={handleAddTodo}>
