@@ -170,6 +170,8 @@ const CheckBox = styled.input`
 
 const EditInput = styled.input`
   height: 30px;
+  width: calc(360px - 143px);
+
   border: none;
   border-bottom: 1px solid black;
   outline: none;
