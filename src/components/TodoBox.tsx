@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -12,11 +12,24 @@ interface TodoBoxProps {
 }
 
 const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const { id, userId, todo, isCompleted } = todoObj;
   const [todoText, setTodoText] = useState(todo);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const handleRemove = () => {
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [isEditMode]);
+
+  const handleEditMode = useCallback(() => {
+    setIsEditMode(!isEditMode);
+  }, [isEditMode]);
+
+  const handleTodoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTodoText(e.target.value);
+  }, []);
+
+  const handleRemove = useCallback(() => {
     axios({
       url: `${URL}/todos/${id}`,
       method: 'delete',
@@ -27,9 +40,9 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
       const newList = todoList.filter((newTodo) => newTodo.id !== id);
       setTodoList(newList);
     });
-  };
+  }, [id, todoList, setTodoList]);
 
-  const handleCheck = () => {
+  const handleCheck = useCallback(() => {
     axios({
       url: `${URL}/todos/${id}`,
       method: 'put',
@@ -51,18 +64,42 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
       };
       setTodoList(copiedList);
     });
-  };
+  }, [id, isCompleted, todo, userId, todoObj, setTodoList, todoList]);
   return (
     <StyledTodoBox>
       <Wrapper>
         <CheckBox type="checkbox" checked={isCompleted} onChange={handleCheck} />
-        <Text>{todo}</Text>
+        {isEditMode ? (
+          <EditInput
+            value={todoText}
+            data-testid="modify-input"
+            ref={inputRef}
+            onChange={handleTodoChange}
+          />
+        ) : (
+          <Text>{todo}</Text>
+        )}
       </Wrapper>
       <Wrapper>
-        <Btn data-testid="modify-button">Edit</Btn>
-        <Btn data-testid="delete-button" onClick={handleRemove}>
-          Remove
-        </Btn>
+        {isEditMode ? (
+          <>
+            <Btn data-testid="submit-button" onClick={handleEditMode}>
+              Submit
+            </Btn>
+            <Btn data-testid="cancel-button" onClick={handleEditMode}>
+              Cancel
+            </Btn>
+          </>
+        ) : (
+          <>
+            <Btn data-testid="modify-button" onClick={handleEditMode}>
+              Edit
+            </Btn>
+            <Btn data-testid="delete-button" onClick={handleRemove}>
+              Remove
+            </Btn>
+          </>
+        )}
       </Wrapper>
     </StyledTodoBox>
   );
@@ -82,6 +119,15 @@ const Wrapper = styled.div`
 
 const CheckBox = styled.input`
   margin: 10px 10px 10px 0;
+`;
+
+const EditInput = styled.input`
+  height: 30px;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+  font-family: 'Pretendard';
+  font-size: 15.5px;
 `;
 
 const Text = styled.p`
