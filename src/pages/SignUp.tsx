@@ -76,7 +76,7 @@ const StyledSignUp = styled.div`
   flex-direction: column;
   align-items: center;
   height: calc(100vh - 120px);
-  margin-top: 40px;
+  margin-top: 120px;
 `;
 
 const Form = styled.form`

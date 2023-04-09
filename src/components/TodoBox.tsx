@@ -38,11 +38,16 @@ const Dot = styled.div`
   margin: 10px 10px 10px 0;
 `;
 
-const Text = styled.p``;
+const Text = styled.p`
+  width: calc(360px - 155px);
+  font-size: 15.5px;
+  word-break: break-all;
+  overflow: hidden;
+`;
 
 const Btn = styled.button`
-  width: 60px;
-  height: 30px;
+  width: 70px;
+  height: 40px;
   border: none;
   background-color: black;
   border-right: 1.25px solid white;
