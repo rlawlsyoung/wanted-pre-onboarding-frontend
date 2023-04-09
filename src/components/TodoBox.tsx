@@ -16,10 +16,16 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
   const { id, userId, todo, isCompleted } = todoObj;
   const [todoText, setTodoText] = useState(todo);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isValid, setIsValid] = useState(true);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [isEditMode]);
+
+  useEffect(() => {
+    if (todoText.length) setIsValid(false);
+    else setIsValid(true);
+  }, [todoText]);
 
   const handleEditMode = useCallback(() => {
     setIsEditMode(!isEditMode);
@@ -36,10 +42,14 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-    }).then(() => {
-      const newList = todoList.filter((newTodo) => newTodo.id !== id);
-      setTodoList(newList);
-    });
+    })
+      .then(() => {
+        const newList = todoList.filter((newTodo) => newTodo.id !== id);
+        setTodoList(newList);
+      })
+      .catch(() => {
+        alert('error');
+      });
   }, [id, todoList, setTodoList]);
 
   const handleCheck = useCallback(() => {
@@ -54,16 +64,20 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
         todo: todo,
         isCompleted: !isCompleted,
       },
-    }).then(() => {
-      const copiedList = [...todoList];
-      copiedList[todoList.indexOf(todoObj)] = {
-        id: id,
-        userId: userId,
-        todo: todo,
-        isCompleted: !isCompleted,
-      };
-      setTodoList(copiedList);
-    });
+    })
+      .then(() => {
+        const copiedList = [...todoList];
+        copiedList[todoList.indexOf(todoObj)] = {
+          id: id,
+          userId: userId,
+          todo: todo,
+          isCompleted: !isCompleted,
+        };
+        setTodoList(copiedList);
+      })
+      .catch(() => {
+        alert('error');
+      });
   }, [id, isCompleted, todo, userId, todoObj, setTodoList, todoList]);
   return (
     <StyledTodoBox>
@@ -75,6 +89,8 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
             data-testid="modify-input"
             ref={inputRef}
             onChange={handleTodoChange}
+            maxLength={32}
+            placeholder="Enter 1 to 32 characters"
           />
         ) : (
           <Text>{todo}</Text>
@@ -83,9 +99,9 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
       <Wrapper>
         {isEditMode ? (
           <>
-            <Btn data-testid="submit-button" onClick={handleEditMode}>
+            <SubmitBtn data-testid="submit-button" onClick={handleEditMode} disabled={isValid}>
               Submit
-            </Btn>
+            </SubmitBtn>
             <Btn data-testid="cancel-button" onClick={handleEditMode}>
               Cancel
             </Btn>
@@ -135,6 +151,17 @@ const Text = styled.p`
   font-size: 15.5px;
   word-break: break-all;
   overflow: hidden;
+`;
+const SubmitBtn = styled.button<{ disabled: boolean }>`
+  width: 55px;
+  height: 40px;
+  border: none;
+  background-color: ${(props) => (props.disabled ? 'gray' : 'black')};
+  border-left: 2.5px solid white;
+  color: white;
+  font-family: 'Pretendard';
+  font-size: 11px;
+  cursor: ${(props) => (props.disabled ? '' : 'pointer')};
 `;
 
 const Btn = styled.button`

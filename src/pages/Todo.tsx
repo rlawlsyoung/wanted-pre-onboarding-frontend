@@ -63,9 +63,13 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
       data: {
         todo: inputValue,
       },
-    }).then((res) => {
-      setTodoList([...todoList, res.data]);
-    });
+    })
+      .then((res) => {
+        setTodoList([...todoList, res.data]);
+      })
+      .catch(() => {
+        alert('error');
+      });
   }, [inputValue, todoList]);
 
   return (

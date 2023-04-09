@@ -53,6 +53,7 @@ const Input = styled.input`
   border-bottom: 1px solid black;
   outline: none;
   font-family: 'Pretendard';
+  font-size: 16px;
 `;
 
 export default InputBox;
