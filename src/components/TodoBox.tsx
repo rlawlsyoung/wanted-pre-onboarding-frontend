@@ -29,7 +29,8 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
 
   const handleEditMode = useCallback(() => {
     setIsEditMode(!isEditMode);
-  }, [isEditMode]);
+    setTodoText(todo);
+  }, [isEditMode, todo]);
 
   const handleTodoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoText(e.target.value);
