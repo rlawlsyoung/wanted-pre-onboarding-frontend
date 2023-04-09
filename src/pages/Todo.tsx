@@ -24,6 +24,7 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
   const [todoList, setTodoList] = useState<TodoTypes[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isValid, setIsValid] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!isLogIn) navigate('/signin');
@@ -43,6 +44,7 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }).then((res) => {
+        setIsLoaded(true);
         res.data && setTodoList(res.data);
       });
   }, [isLogIn]);
@@ -72,7 +74,7 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
       });
   }, [inputValue, todoList]);
 
-  return (
+  return isLoaded ? (
     <StyledTodo>
       <TodoContainer className="flex-center">
         <TodoTitle>To Do</TodoTitle>
@@ -99,6 +101,8 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
         </TodoUl>
       </TodoContainer>
     </StyledTodo>
+  ) : (
+    <Loading className="flex-center">Loading</Loading>
   );
 };
 
@@ -108,6 +112,14 @@ const StyledTodo = styled.div`
   align-items: center;
   height: calc(100vh - 120px);
   margin-top: 120px;
+`;
+
+const Loading = styled.div`
+  height: calc(100vh - 80px);
+  margin-top: 80px;
+  color: gray;
+  font-size: 26px;
+  font-weight: 700;
 `;
 
 const TodoContainer = styled.div`
