@@ -2,17 +2,20 @@ import styled from 'styled-components';
 
 interface TodoBoxProps {
   text: string;
+  handleRemove: () => void;
 }
 
-const TodoBox: React.FC<TodoBoxProps> = ({ text }) => {
+const TodoBox: React.FC<TodoBoxProps> = ({ text, handleRemove }) => {
   return (
     <StyledTodoBox>
       <Wrapper>
         <Dot /> <Text>{text}</Text>
       </Wrapper>
       <Wrapper>
-        <Btn>Edit</Btn>
-        <Btn>Remove</Btn>
+        <Btn data-testid="modify-button">Edit</Btn>
+        <Btn data-testid="delete-button" onClick={handleRemove}>
+          Remove
+        </Btn>
       </Wrapper>
     </StyledTodoBox>
   );
@@ -39,14 +42,14 @@ const Dot = styled.div`
 `;
 
 const Text = styled.p`
-  width: calc(360px - 155px);
+  width: calc(360px - 125px);
   font-size: 15.5px;
   word-break: break-all;
   overflow: hidden;
 `;
 
 const Btn = styled.button`
-  width: 70px;
+  width: 55px;
   height: 40px;
   border: none;
   background-color: black;
@@ -54,7 +57,7 @@ const Btn = styled.button`
   border-left: 1.25px solid white;
   color: white;
   font-family: 'Pretendard';
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
 `;
 

@@ -23,10 +23,16 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
   const navigate = useNavigate();
   const [todoList, setTodoList] = useState<TodoTypes[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     if (!isLogIn) navigate('/signin');
   }, [isLogIn, navigate]);
+
+  useEffect(() => {
+    if (inputValue.length > 0 && inputValue.length <= 32) setIsValid(true);
+    else setIsValid(false);
+  }, [inputValue]);
 
   useEffect(() => {
     isLogIn &&
@@ -39,13 +45,13 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
         .then((res) => {
           res.data && setTodoList(res.data);
         });
-  }, []);
+  }, [isLogIn]);
 
   const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
-  const handleAddTodo = () => {
+  const handleAddTodo = useCallback(() => {
     setInputValue('');
     axios({
       url: `${URL}/todos`,
@@ -59,7 +65,7 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
     }).then((res) => {
       setTodoList([...todoList, res.data]);
     });
-  };
+  }, [inputValue, todoList]);
 
   return (
     <StyledTodo>
@@ -69,20 +75,32 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
           <InputBox
             title="what to do?"
             dataTestId="new-todo-input"
-            placeholder="Enter 1 to 28 characters"
+            placeholder="Enter 1 to 32 characters"
             inputType="text"
             value={inputValue}
-            maxLength={28}
+            maxLength={32}
             handleOnChange={handleOnChange}
           />
-          <Btn data-testid="new-todo-add-button" onClick={handleAddTodo}>
+          <Btn data-testid="new-todo-add-button" onClick={handleAddTodo} disabled={!isValid}>
             Add
           </Btn>
         </InputContainer>
         <TodoUl>
-          {todoList.map((todo) => (
-            <TodoBox text={todo.todo} key={todo.id} />
-          ))}
+          {todoList.map((todo) => {
+            const handleRemove = () => {
+              axios
+                .delete(`${URL}/todos/${todo.id}`, {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                  },
+                })
+                .then(() => {
+                  const removedList = todoList.filter((newTodo) => newTodo.id !== todo.id);
+                  setTodoList(removedList);
+                });
+            };
+            return <TodoBox text={todo.todo} key={todo.id} handleRemove={handleRemove} />;
+          })}
         </TodoUl>
       </TodoContainer>
     </StyledTodo>
@@ -112,18 +130,16 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-const Btn = styled.button`
+const Btn = styled.button<{ disabled: boolean }>`
   width: 80px;
   height: 51px;
   border: none;
   margin: 0 0 40px 0;
-  background-color: black;
-  /* background-color: ${(props) => (props.disabled ? 'gray' : 'black')}; */
+  background-color: ${(props) => (props.disabled ? 'gray' : 'black')};
   color: white;
   font-family: 'Pretendard';
   font-size: 18px;
-  cursor: pointer;
-  /* cursor: ${(props) => (props.disabled ? '' : 'pointer')}; */
+  cursor: ${(props) => (props.disabled ? '' : 'pointer')};
 `;
 
 const TodoUl = styled.ul`
