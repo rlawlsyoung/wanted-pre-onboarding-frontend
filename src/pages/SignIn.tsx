@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import InputBox from '../components/InputBox';
 import AccountBtn from '../components/AccountBtn';
 
+import { URL } from '../Router';
+
 interface SignInProps {
   setIsLogIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -28,11 +30,12 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      axios
-        .post('https://www.pre-onboarding-selection-task.shop/auth/signin', {
-          email: emailValue,
-          password: pwValue,
-        })
+      axios({
+        url: `${URL}/auth/signin`,
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: { email: emailValue, password: pwValue },
+      })
         .then((res) => {
           localStorage.setItem('token', res.data.access_token);
           setIsLogIn(true);
@@ -55,15 +58,16 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
   }, [emailValue, pwValue]);
 
   return (
-    <StyledSignIn className="flex-center">
+    <StyledSignIn>
       <Form className="flex-center" onSubmit={handleSubmit}>
         <FormTitle> Sign In</FormTitle>
         <InputBox
           title="e-mail"
           dataTestId="email-input"
           placeholder="must include @"
-          inputType="text"
-          handleOnChange={handleEmailChange}></InputBox>
+          inputType="email"
+          handleOnChange={handleEmailChange}
+        />
         <InputBox
           title="password"
           dataTestId="password-input"
@@ -80,7 +84,11 @@ const SignIn: React.FC<SignInProps> = ({ setIsLogIn }) => {
 };
 
 const StyledSignIn = styled.div`
-  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 120px);
+  margin-top: 120px;
 `;
 
 const Form = styled.form`

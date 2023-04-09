@@ -5,6 +5,8 @@ interface InputProps {
   dataTestId: string;
   inputType: string;
   placeholder: string;
+  value?: string;
+  maxLength?: number;
   handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -13,16 +15,21 @@ const InputBox: React.FC<InputProps> = ({
   dataTestId,
   inputType,
   placeholder,
+  value,
+  maxLength,
   handleOnChange,
 }) => {
   return (
     <StyledInput>
       <InputTitle>{title}</InputTitle>
       <Input
+        value={value}
         type={inputType}
         data-testid={dataTestId}
         onChange={handleOnChange}
         placeholder={placeholder}
+        maxLength={maxLength}
+        autoComplete="off"
       />
     </StyledInput>
   );
@@ -46,6 +53,7 @@ const Input = styled.input`
   border-bottom: 1px solid black;
   outline: none;
   font-family: 'Pretendard';
+  font-size: 16px;
 `;
 
 export default InputBox;

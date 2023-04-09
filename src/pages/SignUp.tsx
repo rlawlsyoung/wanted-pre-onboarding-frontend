@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import InputBox from '../components/InputBox';
 import AccountBtn from '../components/AccountBtn';
 
+import { URL } from '../Router';
+
 const SignUp = () => {
   const navigate = useNavigate();
 
@@ -23,11 +25,12 @@ const SignUp = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post('https://www.pre-onboarding-selection-task.shop/auth/signup', {
-        email: emailValue,
-        password: pwValue,
-      })
+    axios({
+      url: `${URL}/auth/signup`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: { email: emailValue, password: pwValue },
+    })
       .then(() => {
         alert('Account creation complete');
         navigate('/signin');
@@ -47,15 +50,16 @@ const SignUp = () => {
   }, [emailValue, pwValue]);
 
   return (
-    <StyledSignUp className="flex-center">
+    <StyledSignUp>
       <Form className="flex-center" onSubmit={handleSubmit}>
         <FormTitle> Sign up</FormTitle>
         <InputBox
           title="e-mail"
           dataTestId="email-input"
           placeholder="must include @"
-          inputType="text"
-          handleOnChange={handleEmailChange}></InputBox>
+          inputType="email"
+          handleOnChange={handleEmailChange}
+        />
         <InputBox
           title="password"
           dataTestId="password-input"
@@ -69,7 +73,11 @@ const SignUp = () => {
 };
 
 const StyledSignUp = styled.div`
-  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100vh - 120px);
+  margin-top: 120px;
 `;
 
 const Form = styled.form`

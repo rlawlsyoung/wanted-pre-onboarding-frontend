@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const Main = () => {
-  return <StyledMain className="flex-center">Welcome to Todo List App :)</StyledMain>;
+const Wrong = () => {
+  return <StyledWrong className="flex-center">Wrong Access</StyledWrong>;
 };
 
-const StyledMain = styled.div`
+const StyledWrong = styled.div`
   height: calc(100vh - 80px);
   margin-top: 80px;
   color: gray;
@@ -12,4 +12,4 @@ const StyledMain = styled.div`
   font-weight: 700;
 `;
 
-export default Main;
+export default Wrong;

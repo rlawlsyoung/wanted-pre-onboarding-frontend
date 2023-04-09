@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ isLogIn, setIsLogIn }) => {
       <Logo>Todo List</Logo>
       <Nav>
         <Link to="/todo" className="expansion">
-          To do
+          To Do
         </Link>
         {isLogIn ? (
           <p className="expansion" onClick={handleLogOut}>
@@ -38,6 +38,8 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  position: fixed;
+  top: 0;
   width: 100vw;
   height: 80px;
   background-color: black;
