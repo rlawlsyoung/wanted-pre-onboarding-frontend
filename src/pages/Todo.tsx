@@ -45,7 +45,8 @@ const Todo = () => {
         todo: inputValue,
       },
     }).then((res) => {
-      console.log(res);
+      setTodoList([...todoList, res.data]);
+      setInputValue('');
     });
   };
 
