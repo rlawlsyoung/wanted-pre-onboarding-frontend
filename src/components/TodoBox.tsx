@@ -79,6 +79,36 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
         alert('error');
       });
   }, [id, isCompleted, todo, userId, todoObj, setTodoList, todoList]);
+
+  const handleEditSubmit = useCallback(() => {
+    axios({
+      url: `${URL}/todos/${id}`,
+      method: 'put',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      data: {
+        todo: todoText,
+        isCompleted: isCompleted,
+      },
+    })
+      .then(() => {
+        const copiedList = [...todoList];
+        copiedList[todoList.indexOf(todoObj)] = {
+          id: id,
+          userId: userId,
+          todo: todoText,
+          isCompleted: isCompleted,
+        };
+        setTodoList(copiedList);
+        setIsEditMode(false);
+      })
+      .catch(() => {
+        alert('error');
+      });
+  }, [id, isCompleted, userId, todoObj, setTodoList, todoList, todoText]);
+
   return (
     <StyledTodoBox>
       <Wrapper>
@@ -99,7 +129,7 @@ const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => 
       <Wrapper>
         {isEditMode ? (
           <>
-            <SubmitBtn data-testid="submit-button" onClick={handleEditMode} disabled={isValid}>
+            <SubmitBtn data-testid="submit-button" onClick={handleEditSubmit} disabled={isValid}>
               Submit
             </SubmitBtn>
             <Btn data-testid="cancel-button" onClick={handleEditMode}>
