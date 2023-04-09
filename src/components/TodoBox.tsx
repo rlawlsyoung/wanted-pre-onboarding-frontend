@@ -1,21 +1,62 @@
 import { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
+import { TodoTypes } from '../pages/Todo';
+import { URL } from '../Router';
+
 interface TodoBoxProps {
-  id: number;
-  text: string;
-  isCompleted: boolean;
-  handleCheck: () => void;
-  handleRemove: () => void;
+  todoObj: TodoTypes;
+  todoList: TodoTypes[];
+  setTodoList: React.Dispatch<React.SetStateAction<TodoTypes[]>>;
 }
 
-const TodoBox: React.FC<TodoBoxProps> = ({ text, isCompleted, handleCheck, handleRemove }) => {
+const TodoBox: React.FC<TodoBoxProps> = ({ todoObj, todoList, setTodoList }) => {
+  const { id, userId, todo, isCompleted } = todoObj;
+  const [todoText, setTodoText] = useState(todo);
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleRemove = () => {
+    axios({
+      url: `${URL}/todos/${id}`,
+      method: 'delete',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then(() => {
+      const newList = todoList.filter((newTodo) => newTodo.id !== id);
+      setTodoList(newList);
+    });
+  };
+
+  const handleCheck = () => {
+    axios({
+      url: `${URL}/todos/${id}`,
+      method: 'put',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json',
+      },
+      data: {
+        todo: todo,
+        isCompleted: !isCompleted,
+      },
+    }).then(() => {
+      const copiedList = [...todoList];
+      copiedList[todoList.indexOf(todoObj)] = {
+        id: id,
+        userId: userId,
+        todo: todo,
+        isCompleted: !isCompleted,
+      };
+      setTodoList(copiedList);
+    });
+  };
   return (
     <StyledTodoBox>
       <Wrapper>
-        <CheckBox type="checkbox" checked={isCompleted} onChange={handleCheck} />{' '}
-        <Text>{text}</Text>
+        <CheckBox type="checkbox" checked={isCompleted} onChange={handleCheck} />
+        <Text>{todo}</Text>
       </Wrapper>
       <Wrapper>
         <Btn data-testid="modify-button">Edit</Btn>

@@ -8,7 +8,7 @@ import TodoBox from '../components/TodoBox';
 import { URL } from '../Router';
 import { useNavigate } from 'react-router-dom';
 
-interface TodoTypes {
+export interface TodoTypes {
   id: number;
   todo: string;
   isCompleted: boolean;
@@ -88,51 +88,8 @@ const Todo: React.FC<TodoProps> = ({ isLogIn }) => {
         </InputContainer>
         <TodoUl>
           {todoList.map((todo) => {
-            const handleRemove = () => {
-              axios({
-                url: `${URL}/todos/${todo.id}`,
-                method: 'delete',
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-              }).then(() => {
-                const newList = todoList.filter((newTodo) => newTodo.id !== todo.id);
-                setTodoList(newList);
-              });
-            };
-
-            const handleCheck = () => {
-              axios({
-                url: `${URL}/todos/${todo.id}`,
-                method: 'put',
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem('token')}`,
-                  'Content-Type': 'application/json',
-                },
-                data: {
-                  todo: todo.todo,
-                  isCompleted: !todo.isCompleted,
-                },
-              }).then(() => {
-                const copiedList = [...todoList];
-                copiedList[todoList.indexOf(todo)] = {
-                  id: todo.id,
-                  userId: todo.userId,
-                  todo: todo.todo,
-                  isCompleted: !todo.isCompleted,
-                };
-                setTodoList(copiedList);
-              });
-            };
             return (
-              <TodoBox
-                id={todo.id}
-                text={todo.todo}
-                isCompleted={todo.isCompleted}
-                key={todo.id}
-                handleCheck={handleCheck}
-                handleRemove={handleRemove}
-              />
+              <TodoBox key={todo.id} todoObj={todo} todoList={todoList} setTodoList={setTodoList} />
             );
           })}
         </TodoUl>
