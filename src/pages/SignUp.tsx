@@ -57,7 +57,7 @@ const SignUp = () => {
           title="e-mail"
           dataTestId="email-input"
           placeholder="must include @"
-          inputType="text"
+          inputType="email"
           handleOnChange={handleEmailChange}
         />
         <InputBox
