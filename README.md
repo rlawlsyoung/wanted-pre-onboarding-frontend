@@ -1,46 +1,32 @@
-# Getting Started with Create React App
+# 💻 wanted-pre-onboarding-frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 1. 프로젝트 소개
 
-## Available Scripts
+원티드에서 진행하는 4월 프리온보딩 인턴십 사전 과제입니다.
 
-In the project directory, you can run:
+회원가입, 로그인, Todo List CRUD 등의 기능을 구현했습니다.
 
-### `npm start`
+***
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 2. 실행 방법
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### 2-1. node.js를 최신 버전으로 설치해주세요.
 
-### `npm test`
+#### 2-2. 레포지토리를 클론해주세요.
+`git clone https://github.com/rlawlsyoung/wanted-pre-onboarding-frontend.git`
+ 
+#### 2-3. dependencies를 설치해주세요.
+`npm install`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 2-4.  npm start 명령어를 통해 프로젝트를 실행시켜 주세요.
+`npm start`
 
-### `npm run build`
+#### 2-5.  http://localhost:3000/ 으로 접속해주세요.
+`http://localhost:3000/`
+***
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. 배포 링크
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**배포 링크** : https://wanted-todo-list-web.netlify.app/
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+데모 영상은 배포 링크로 대체 가능하다고 하여 생략했습니다.
